@@ -20,7 +20,7 @@ func TestSuite(t *testing.T) {
 }
 
 func (s *TSuite) Test_review() {	
-	product := "B0B6HRB7T4"	
+	product := "38UIUAKPD9GV7"	
 	//https://www.amazon.com/product-reviews/B084RGZ3P7	
 	host := "https://www.amazon.com"
 	path := "/product-reviews/" + product	
