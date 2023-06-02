@@ -30,8 +30,9 @@ func main() {
 	//"B084RGZ3P7"
 	host := "https://www.amazon.com"
 	path := "/product-reviews/" + product
+	url := host + path
 	c := craw.NewCraw(host, path, product)
-	err := c.GetWebData()
+	err := c.GetWebData(url)
 	if err != nil {
 		log.Error(err)
 	}

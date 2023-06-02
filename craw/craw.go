@@ -6,60 +6,71 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
+
 	//"github.com/PuerkitoBio/goquery"
 	"github.com/anaskhan96/soup"
 	log "github.com/sirupsen/logrus"
 )
 
 type Craw struct {
-	host string
-	path string
-	url string
+	host    string
+	path    string
+	url     string
 	product string
-	key int
-	rtitle map[int]string
-	rdate map[int]string
+	key     int
+	rtitle  map[int]string
+	rdate   map[int]string
 	rnation map[int]string
-	rstar map[int]string
+	rstar   map[int]string
 	rrating map[int]string
-	rbody map[int]string
+	rbody   map[int]string
 }
 
 func NewCraw(hostname, pathname, productname string) *Craw {
 	trend := Craw{
-		host: hostname,
-		path: pathname,
-		url: hostname + pathname,
+		host:    hostname,
+		path:    pathname,
+		url:     hostname + pathname,
 		product: productname,
-		key: 1,
-		rtitle: map[int]string{},
-		rdate: map[int]string{},
+		key:     1,
+		rtitle:  map[int]string{},
+		rdate:   map[int]string{},
 		rnation: map[int]string{},
-		rstar: map[int]string{},
+		rstar:   map[int]string{},
 		rrating: map[int]string{},
-		rbody: map[int]string{},
-}
+		rbody:   map[int]string{},
+	}
 	return &trend
 }
 
-func (c *Craw) GetWebData() error {
-	url := c.host + c.path
+func (c *Craw) GetWebData(url string) error {
+	//url := c.host + c.path
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("User-Agent", "Thunder Client (https://www.thunderclient.com)")
-	res, _ := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
 	//fmt.Println(string(body))
-	err := c.ParparseBody(string(body))
+	err = c.ParparseBody(string(body))
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 	return nil
 }
+
 func (c *Craw) ParparseBody(body string) error {
 	doc := soup.HTMLParse(string(body))
 	div := doc.FindAll("div", "data-hook", "review")
@@ -95,20 +106,24 @@ func (c *Craw) ParparseBody(body string) error {
 		}
 		c.key++
 	}
+
 	div = doc.FindAll("div", "id", "cm_cr-pagination_bar")
 
 	for _, d := range div {
-		alink := d.Find("li", "class", "a-last")
-		a1 := alink.Find("a")
-		if a1.NodeValue != "" {
-			newpath := a1.Attrs()["href"]
-			c.path = newpath
-			log.Debugf("[%s]", c.path)
-			err := c.GetWebData()
-			if err != nil {
-				log.Error(err)
+		alink := d.FindAll("li", "class", "a-last")
+		for _, l := range alink {
+			a1 := l.Find("a")
+			if a1.NodeValue != "" {
+				nextpage := a1.Attrs()["href"]
+                newurl := c.host + nextpage
+				c.url = newurl
+				log.Debugf("[%s]", c.url)
+				err := c.GetWebData(newurl)
+				if err != nil {
+					log.Error(err)
+				}
 			}
-	}
+		}
 	}
 	return nil
 }
@@ -122,8 +137,15 @@ func (c *Craw) WriteToFile() error {
 	wr := csv.NewWriter(bufio.NewWriter(file))
 	// csv 내용 쓰기
 	for i := 1; i < c.key; i++ {
-		wr.Write([]string{"A", "0.25"})
-		wr.Write([]string{"B", "55.70"})
+		wr.Write([]string{
+			strconv.Itoa(i),
+			c.rdate[i],
+			c.rstar[i],
+			c.rrating[i],
+			c.rnation[i],
+			c.rtitle[i],
+			c.rbody[i],
+		})
 		wr.Flush()
 	}
 	return nil

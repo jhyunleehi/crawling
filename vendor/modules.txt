@@ -4,9 +4,20 @@ github.com/anaskhan96/soup
 # github.com/antonfisher/nested-logrus-formatter v1.3.1
 ## explicit
 github.com/antonfisher/nested-logrus-formatter
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew/spew
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
 # github.com/sirupsen/logrus v1.9.2
 ## explicit; go 1.13
 github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.7.0
+## explicit; go 1.13
+github.com/stretchr/testify/assert
+github.com/stretchr/testify/require
+github.com/stretchr/testify/suite
 # golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
 ## explicit; go 1.11
 golang.org/x/net/html
@@ -34,3 +45,6 @@ golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
 golang.org/x/text/runes
 golang.org/x/text/transform
+# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+## explicit
+gopkg.in/yaml.v3
