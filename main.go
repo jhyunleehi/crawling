@@ -22,8 +22,8 @@ func init() {
 func main() {
 	var product string
 	if len(os.Args) < 2 {
-		//panic("에러: 2개 미만의 argument")
-		product = "B084RGZ3P7"
+		panic("에러: 2개 미만의 argument")
+		//product = "B084RGZ3P7"
 	} else {
 		product = os.Args[1]
 	}

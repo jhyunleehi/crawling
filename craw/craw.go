@@ -3,6 +3,7 @@ package craw
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -12,15 +13,18 @@ import (
 
 	//"github.com/PuerkitoBio/goquery"
 	"github.com/anaskhan96/soup"
+	"github.com/gocolly/colly"
 	log "github.com/sirupsen/logrus"
 )
 
 type Craw struct {
+	co      *colly.Collector
 	host    string
 	path    string
 	url     string
 	product string
 	key     int
+	pagenum int
 	rtitle  map[int]string
 	rdate   map[int]string
 	rnation map[int]string
@@ -36,6 +40,7 @@ func NewCraw(hostname, pathname, productname string) *Craw {
 		url:     hostname + pathname,
 		product: productname,
 		key:     1,
+		pagenum: 2,
 		rtitle:  map[int]string{},
 		rdate:   map[int]string{},
 		rnation: map[int]string{},
@@ -49,8 +54,8 @@ func NewCraw(hostname, pathname, productname string) *Craw {
 func (c *Craw) GetWebData(url string) error {
 	//url := c.host + c.path
 	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("User-Agent", "Thunder Client (https://www.thunderclient.com)")
+	req.Header.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit 537.36 (KHTML, like Gecko) Chrome")
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Error(err)
@@ -115,16 +120,30 @@ func (c *Craw) ParparseBody(body string) error {
 			a1 := l.Find("a")
 			if a1.NodeValue != "" {
 				nextpage := a1.Attrs()["href"]
-                newurl := c.host + nextpage
-				c.url = newurl
-				log.Debugf("[%s]", c.url)
-				err := c.GetWebData(newurl)
+				var nexturl string
+				if strings.Contains(nextpage, c.host) {
+					//nexturl = nextpage
+					nexturl = fmt.Sprintf("%s/ref=cm_cr_getr_d_paging_btm_4?ie=UTF8&amp;pageNumber=%d&amp;pageSize=10", c.url, c.pagenum)
+					if c.pagenum > 10 {
+						return nil
+					}
+				} else {
+					nexturl = c.host + nextpage
+                }
+                log.Debug("---------------------------------")
+				log.Debugf("==>>>>>[%d][%s]", c.pagenum, nexturl)
+				c.pagenum++
+				//c.url = nexturl
+				time.Sleep(3 * time.Second)
+				err := c.GetWebData(nexturl)
 				if err != nil {
 					log.Error(err)
 				}
 			}
 		}
 	}
+	//<a href="/Samsung-55-inch-Class-QLED-Built/product-reviews/B084RGZ3P7/ref=cm_cr_arp_d_paging_btm_2?ie=UTF8&amp;pageNumber=2
+
 	return nil
 }
 
