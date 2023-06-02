@@ -8,8 +8,8 @@
 # ce $GOPATH/src
 # git clone  https://github.com/jhyunleehi/crawling.git
 # go build -mod vendor main.go
-# ./main 상품코드 
-# ./main B0B6HRB7T4
+# main 상품코드 
+# main B0B6HRB7T4
 
 B0B6HRB7T4.csv 파일 생성됨  
 ```
