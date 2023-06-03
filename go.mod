@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/anaskhan96/soup v1.2.5
 	github.com/antonfisher/nested-logrus-formatter v1.3.1
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gocolly/colly v1.2.0
 	github.com/sirupsen/logrus v1.9.2
 	github.com/stretchr/testify v1.7.0

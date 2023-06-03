@@ -61,6 +61,7 @@ func (c *Craw) GetWebData(url string) error {
 		log.Error(err)
 		return err
 	}
+	
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -68,6 +69,7 @@ func (c *Craw) GetWebData(url string) error {
 		return nil
 	}
 	//fmt.Println(string(body))
+	
 	err = c.ParparseBody(string(body))
 	if err != nil {
 		log.Error(err)
@@ -77,6 +79,7 @@ func (c *Craw) GetWebData(url string) error {
 }
 
 func (c *Craw) ParparseBody(body string) error {
+	
 	doc := soup.HTMLParse(string(body))
 	div := doc.FindAll("div", "data-hook", "review")
 	for _, d := range div {

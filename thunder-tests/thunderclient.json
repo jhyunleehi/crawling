@@ -32,5 +32,59 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "da3d9968-610c-42e6-bfbd-12a770a72283",
+    "colId": "4eb82b4f-7556-4e33-9846-4737d8c81086",
+    "containerId": "",
+    "name": "naver",
+    "url": "https://shopping.naver.com/logistics/products/8571752135",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-06-03T07:53:46.107Z",
+    "modified": "2023-06-03T13:53:41.950Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "NaPm",
+        "value": "ct%3Dlifovthq%7Cci%3Dshoppingwindow%7Ctr%3Dswl%7Chk%3Dab9cecb52994abe8c538b959d63f6dd2e0e981e1%7Ctrx%3D",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "dd96ee8c-0782-4b38-89b1-a7903036e7de",
+    "colId": "4eb82b4f-7556-4e33-9846-4737d8c81086",
+    "containerId": "",
+    "name": "next",
+    "url": "https://shopping.naver.com/v1/reviews/paged-reviews",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-06-03T08:28:11.158Z",
+    "modified": "2023-06-03T15:25:47.537Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"page\": 5,\n  \"pageSize\": 20,\n  \"merchantNo\": \"8571752135\",\n  \"originProductNo\": \"8530881994\",\n  \"sortType\": \"REVIEW_RANKING\"\n}\n\n\n",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "55ac9c0a-7f13-4c7d-9113-9c849badc2c5",
+    "colId": "4eb82b4f-7556-4e33-9846-4737d8c81086",
+    "containerId": "",
+    "name": "c1",
+    "url": "https://shopping.naver.com/v1/reviews/paged-reviews/3806830917",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2023-06-03T12:30:18.773Z",
+    "modified": "2023-06-03T12:30:22.984Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

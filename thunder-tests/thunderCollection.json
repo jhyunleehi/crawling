@@ -5,5 +5,12 @@
     "created": "2023-06-02T12:44:25.469Z",
     "sortNum": 10000,
     "folders": []
+  },
+  {
+    "_id": "4eb82b4f-7556-4e33-9846-4737d8c81086",
+    "colName": "naver",
+    "created": "2023-06-03T07:53:36.215Z",
+    "sortNum": 20000,
+    "folders": []
   }
 ]
